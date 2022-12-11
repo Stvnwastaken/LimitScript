@@ -3,7 +3,7 @@
 todos:
 localstorage that adds up all time in site
 make it into a graph to chart the data
-somehow inject code without tampermonkey, discreet (chrome bookmark?)
+somehow inject code without tampermonkey, discreet (chrome bookmark? or service/web worker)
 reinstall after uninstall somehow
 
 features:
