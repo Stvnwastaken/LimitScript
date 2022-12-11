@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LimitScript
 // @namespace    http://github.com/LightLordYT
-// @version      1.3.0
+// @version      1.3.2
 // @description  a simple script that allows you to block certain websites with @match after x time elapsed, password implemented and can be changed along with time elapsed to block
 // @author       LightLord
 // @match        https://crazygames.com/*
@@ -16,7 +16,7 @@
     window.onload = () => {
         let int = () => {
             setInterval(() => {
-            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.user.js',
+            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/raw/master/bootloader.user.js',
             text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`,
             body = document.body
             body.innerHTML = text
