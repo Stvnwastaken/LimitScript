@@ -16,7 +16,7 @@
     window.onload = () => {
         let int = () => {
             setInterval(() => {
-            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.js',
+            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.user.js',
             text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`,
             body = document.body
             body.innerHTML = text
