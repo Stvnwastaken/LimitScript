@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LimitScript
 // @namespace    http://github.com/LightLordYT
-// @version      1.2.3
+// @version      1.3.0
 // @description  a simple script that allows you to block certain websites with @match after x time elapsed, password implemented and can be changed along with time elapsed to block
 // @author       LightLord
 // @match        https://crazygames.com/*
@@ -15,6 +15,7 @@
 //put urls u want to block in //@match
 
 (function(window, document) {
+  let destroyed
   let initObject = {
       handleRes: (name) => {
         function res(){
@@ -33,6 +34,7 @@
         })
       },
       init: () => {
+        destroyed = false
         let date = new Date()
         let old_date = localStorage.getItem("Light's_date")
         if(old_date !== date){
@@ -42,6 +44,7 @@
         let isTracker = localStorage.getItem("Light's_tracker") ? true : false
         isTracker ? '' : localStorage.setItem("Light's_tracker", 0)
         },
+        //hopefully can make this more effecient by "hacking" into the game tick function dynamically somehow
       update: setInterval(() => {
           let handler = initObject.handleRes.bind(initObject)
           let name = window.location.href
@@ -49,12 +52,24 @@
           tracker++
           tracker > 720 ? handler(name) : ''
           localStorage.setItem("Light's_tracker", tracker)
-      }, 5000)
+          //so doesnt loop forever and make new loops to call stack, glitches tampermonkey out, slows page down
+          //remember we have to be discreet or user will find out about the script
+          if(destroyed){
+            let setCurrent = initObject.update.bind(initObject)
+            clearInterval(setCurrent)
+          }
+      }, 5000),
+      destroy: () => {
+        destroyed = true
+      }
   }
       window.onLoad = () => {
           let currentObject = initObject
           currentObject.init()
           currentObject.update()
+          window.onclose = () => {
+            currentObject.destroy()
+          }
       }
 
 })(window, document);
