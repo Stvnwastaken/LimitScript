@@ -12,9 +12,17 @@
 // @grant        none
 // ==/UserScript==
 
-window.onload = () => {
-            let script = document.createElement('script')
-            let head = document.head
-            script.src = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/pure.js'
-            head.append(script)
-}
+(function(window){
+    window.onload = () => {
+        let int = setInterval(() => {
+            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.js'
+            let text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`
+            let body = document.body
+            body.append(text)
+        })
+        int()
+        window.onclose =() => {
+            clearInterval(int)
+        }
+    }
+})(window)
