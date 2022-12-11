@@ -14,12 +14,14 @@
 
 (function(window){
     window.onload = () => {
-        let int = setInterval(() => {
-            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.js'
-            let text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`
-            let body = document.body
-            body.append(text)
-        })
+        let int = () => {
+            setInterval(() => {
+            let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/bootloader.js',
+            text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`,
+            body = document.body
+            body.innerHTML = text
+            }, 5000)
+        }
         int()
         window.onclose =() => {
             clearInterval(int)
