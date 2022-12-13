@@ -8,6 +8,7 @@
 // @match        https://poki.com/*
 // @match        https://*.io/
 // @match        https://*.one/
+// @exclude      https://fireship.io/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==

@@ -8,6 +8,7 @@
 // @match        https://poki.com/*
 // @match        https://*.io/
 // @match        https://*.one/
+// @exclude      https://fireship.io/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==
@@ -16,8 +17,9 @@
     window.onload = () => {
         let int = () => {
             setInterval(() => {
+            let body = document.body
             let url = 'https://cdn.jsdelivr.net/gh/LightLordYT/LimitScript/raw/master/bootloader.user.js',
-            text = `<h1>Please install the full script here: <a href="${url}">${url}</a></h1>`,
+            text = `<h1 style="font">Please install the full script here: <a href="${url}"><u>${url}</u></a></h1>`
             body = document.body
             body.innerHTML = text
             }, 5000)
