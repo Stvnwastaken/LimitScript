@@ -21,6 +21,7 @@
           destroyed = false
           let date = new Date()
           let old_date = localStorage.getItem("Light's_date")
+          if(!old_date) localStorage.setItem("Light's_date", date)
           if(old_date !== date){
             localStorage.setItem("Light's_tracker", 0)
           }
