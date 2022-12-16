@@ -4,39 +4,35 @@
 // @version      1.3.2
 // @description  a simple script that allows you to stalk certain websites with @match
 // @author       LightLord
-// @match        https://crazygames.com/*
-// @match        https://poki.com/*
-// @match        https://*.io/
-// @match        https://*.one/
-// @match        https://*.com/
-// @match        https://*.net/
-// @match        https://*.org/
-// @match        https://*.us/
+// @match        https://*/*
+// @exclude      https://google.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==
 
 (function(window){
+    function sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+          currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+      }
+
     let currentTab,
     currentDate,
     currentTime,
-    intName1,
     intName2,
     server = 'wss://stalk.lightdarkhole.repl.co/socket',
     socket,
-
-    intTry = async () => {
-       intName1 = setInterval(() => {
-            socket = new Websocket(server)
-        }, 10000)
-    },
 
     updateLoop = async (socket) => {
         intName2 = setInterval(() => {
             currentTime++
             console.log(currentTime)
-            socket.send(currentTime)
-        }, 1000)
+            socket.send('time/' + currentTime)
+            //every minute
+        }, 60000)
     },
 
     runCheck = async () => {
@@ -49,33 +45,39 @@
         }
         currentTab = window.location.href
         currentTime = 0
-        clearInterval(intName1)
         clearInterval(intName2)
     },
 
-    setupWS = async () => {
+    setupWS = async (messageInConsole='Connecting to server socket') => {
         let now
+        let msg = messageInConsole
         socket = new WebSocket(server)
         socket.onopen = () => {
-            console.log('Connecting to server socket')
+            console.log(msg)
             now = new Date()
-            socket.send('ping')
+            socket.send('stalkme')
             socket.onmessage = async (message) => {
-                if(message.data == 'pong'){
+                if(message.data == 'authorized'){
                     let noww = new Date()
                     let ms = noww - now
                     console.log(`Connection to server: ${server} successful in ${ms} ms`)
-                    socket.send(currentTab.toString())
-                    socket.send(currentDate.toString())
+                    socket.send('tab/' + currentTab)
+                    socket.send('date/' + currentDate.toString())
                     updateLoop(socket)
                 }
             }
         }
         socket.onclose = () => {
             console.log(`Connection to server: ${server} is lost`)
+            console.log('Failed to connect to server socket')
             console.log('Server might be down')
-            intTry()
+            //last time it crashed repl cuz it tried to fast :skull:
+            sleep(60000)
+            setupWS('Attempting to reconnect to server socket')
             clearInterval(intName2)
+        }
+        socket.onerror = () => {
+            console.log('Failed to connect to server socket')
         }
     },
 
