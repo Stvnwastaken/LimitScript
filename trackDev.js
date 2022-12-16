@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         StalkDev
+// @name         StalkDevBuild
 // @namespace    http://github.com/LightLordYT
 // @version      1.3.2
 // @description  a simple script that allows you to stalk certain websites with @match
@@ -9,6 +9,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==
+
+//how to exclude google search engine
 
 (function(window){
     function sleep(milliseconds) {
@@ -30,7 +32,7 @@
         intName2 = setInterval(() => {
             currentTime++
             console.log(currentTime)
-            socket.send('time/' + currentTime)
+            socket.send('stalkme/time/' + currentTime)
             //every minute
         }, 60000)
     },
@@ -55,16 +57,15 @@
         socket.onopen = () => {
             console.log(msg)
             now = new Date()
-            socket.send('stalkme')
-            socket.onmessage = async (message) => {
-                if(message.data == 'authorized'){
-                    let noww = new Date()
+            let noww = new Date()
                     let ms = noww - now
                     console.log(`Connection to server: ${server} successful in ${ms} ms`)
-                    socket.send('tab/' + currentTab)
-                    socket.send('date/' + currentDate.toString())
+                    socket.send('stalkme/ms/' + ms)
+                    socket.send('stalkme/tab/' + currentTab)
+                    socket.send('stalkme/date/' + currentDate.toString())
                     updateLoop(socket)
-                }
+            socket.onmessage = async (message) => {
+                console.log(message)
             }
         }
         socket.onclose = () => {
