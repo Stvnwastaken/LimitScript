@@ -7,6 +7,10 @@ somehow inject code without tampermonkey, discreet (chrome bookmark? or service/
 reinstall after uninstall somehow
 establish connection to server to see live view of client
 
+revamp:
+show current tab, how long they have been on it
+track weekly daily
+
 features:
  - bootloader finished
  - passed greasyfork's cdn check with manual install
