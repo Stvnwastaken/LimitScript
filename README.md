@@ -1,4 +1,4 @@
-#Lightweight script for blocking sites
+#Lightweight script for blocking sites and tracking people
 
 todos:
 localstorage that adds up all time in site
