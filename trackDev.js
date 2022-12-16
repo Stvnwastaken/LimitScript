@@ -16,24 +16,31 @@
 // @grant        none
 // ==/UserScript==
 
-(function(window, document){
+(function(window){
     let currentTab,
     currentDate,
     currentTime,
-    server = 'wss://',
-    intName,
+    intName1,
+    intName2,
+    server = 'wss://stalk.lightdarkhole.repl.co/socket',
     socket,
 
-    updateLoop = async () => {
-        intName = setInterval(() => {
+    intTry = async () => {
+       intName1 = setInterval(() => {
+            socket = new Websocket(server)
+        }, 10000)
+    },
+
+    updateLoop = async (socket) => {
+        intName2 = setInterval(() => {
             currentTime++
-            return currentTime
+            console.log(currentTime)
+            socket.send(currentTime)
         }, 1000)
-        intName()
     },
 
     runCheck = async () => {
-        if(!localStorage.getItem("Light's_time")){
+        if(!localStorage.getItem("Light's_date")){
             localStorage.setItem("Light's_date", new Date())
             currentDate = localStorage.getItem("Light's_date")
         }else{
@@ -41,35 +48,34 @@
             currentDate = localStorage.getItem("Light's_date")
         }
         currentTab = window.location.href
-        clearInterval(intName)
-    },
-
-    heartbeat = () => {
-        clearTimeout(this.pingTimeout)
-        this.pingTimeout = setTimeout(() => {
-            this.terminate()
-        }, 10000)
+        currentTime = 0
+        clearInterval(intName1)
+        clearInterval(intName2)
     },
 
     setupWS = async () => {
+        let now
         socket = new WebSocket(server)
         socket.onopen = () => {
+            console.log('Connecting to server socket')
+            now = new Date()
             socket.send('ping')
-            heartbeat()
             socket.onmessage = async (message) => {
                 if(message.data == 'pong'){
-                    console.log(`Connection to server: ${server} successful`)
-                    socket.send(JSON.stringify(currentTab))
-                    socket.send(JSON.stringify(currentDate))
-                    let curTime = await updateLoop()
-                    socket.send(JSON.stringify(curTime))
+                    let noww = new Date()
+                    let ms = noww - now
+                    console.log(`Connection to server: ${server} successful in ${ms} ms`)
+                    socket.send(currentTab.toString())
+                    socket.send(currentDate.toString())
+                    updateLoop(socket)
                 }
             }
         }
-        socket.onclose('ping', heartbeat)
         socket.onclose = () => {
             console.log(`Connection to server: ${server} is lost`)
-            clearTimeout(this.pingTimeout)
+            console.log('Server might be down')
+            intTry()
+            clearInterval(intName2)
         }
     },
 
@@ -77,5 +83,4 @@
         await runCheck().then(setupWS())
     }
     window.onload = init()
-    window.onclose = socket.close()
-})(window, document)
+})(window)
