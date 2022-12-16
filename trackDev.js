@@ -44,21 +44,32 @@
         clearInterval(intName)
     },
 
+    heartbeat = () => {
+        clearTimeout(this.pingTimeout)
+        this.pingTimeout = setTimeout(() => {
+            this.terminate()
+        }, 10000)
+    },
+
     setupWS = async () => {
         socket = new WebSocket(server)
         socket.onopen = () => {
             socket.send('ping')
+            heartbeat()
             socket.onmessage = async (message) => {
                 if(message.data == 'pong'){
                     console.log(`Connection to server: ${server} successful`)
-                    socket.send(currentDate)
+                    socket.send(JSON.stringify(currentTab))
+                    socket.send(JSON.stringify(currentDate))
                     let curTime = await updateLoop()
-                    socket.send(curTime)
+                    socket.send(JSON.stringify(curTime))
                 }
             }
         }
+        socket.onclose('ping', heartbeat)
         socket.onclose = () => {
             console.log(`Connection to server: ${server} is lost`)
+            clearTimeout(this.pingTimeout)
         }
     },
 
