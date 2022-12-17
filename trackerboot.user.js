@@ -5,13 +5,8 @@
 // @description  a simple script that allows you to stalk certain websites with @match
 // @author       LightLord
 // @match        https://crazygames.com/*
-// @match        https://poki.com/*
-// @match        https://*.io/
-// @match        https://*.one/
-// @match        https://*.com/
-// @match        https://*.net/
-// @match        https://*.org/
-// @match        https://*.us/
+// @match        https://*/*
+// @exclude      https://google.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==
