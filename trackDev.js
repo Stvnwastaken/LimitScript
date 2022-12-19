@@ -51,12 +51,11 @@
     },
 
     setupWS = async (messageInConsole='Connecting to server socket') => {
-        let now
+        let now = new Date()
         let msg = messageInConsole
         socket = new WebSocket(server)
         socket.onopen = () => {
             console.log(msg)
-            now = new Date()
             let noww = new Date()
                     let ms = noww - now
                     console.log(`Connection to server: ${server} successful in ${ms} ms`)
