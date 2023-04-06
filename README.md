@@ -11,3 +11,10 @@ features:
 - currentTab
 - currentDate
 - Time on tab total amount
+
+# installation
+
+## make sure to have a userscript manager installed (eg tampermonkey)
+
+Blocker: Go to `bootloader.user.js` and press raw
+Tracker: Go to `trackerboot.user.js` and press raw
